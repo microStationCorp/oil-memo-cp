@@ -8,15 +8,29 @@ import {
   Button,
   Snackbar,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoginSchemaValidation } from "utils/validation";
+import { useRouter } from "next/dist/client/router";
+import AuthCheck from "utils/checkAuth";
 
 export default function Login() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const [isAuth, setAuth] = useState(false);
   const [empId, setEmpId] = useState("");
 
   const [alertMsg, setMsg] = useState("");
   const [alertType, setAlertType] = useState("success");
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    if (AuthCheck()) {
+      router.push("/");
+    }
+    setLoading(false);
+  }, []);
 
   const onSubmit = () => {
     const { error, value } = LoginSchemaValidation({
@@ -32,6 +46,7 @@ export default function Login() {
       }).then((res) => {
         res.json().then((data) => {
           console.log(data);
+          localStorage.setItem("emp_id", data.empId);
         });
       });
     } else {
@@ -48,7 +63,7 @@ export default function Login() {
     setOpen(false);
   };
 
-  return (
+  return !loading ? (
     <>
       <Head>
         <title>Login</title>
@@ -96,5 +111,5 @@ export default function Login() {
         message={alertMsg}
       />
     </>
-  );
+  ) : null;
 }
