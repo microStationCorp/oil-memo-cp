@@ -7,6 +7,7 @@ import {
   TextField,
   Button,
   Snackbar,
+  Alert,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { LoginSchemaValidation } from "utils/validation";
@@ -17,7 +18,6 @@ export default function Login() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const [isAuth, setAuth] = useState(false);
   const [empId, setEmpId] = useState("");
 
   const [alertMsg, setMsg] = useState("");
@@ -49,8 +49,12 @@ export default function Login() {
           localStorage.setItem("emp_id", data.empId);
         });
       });
+      setMsg("submitted");
+      setAlertType("success");
+      setOpen(true);
     } else {
       setMsg(error.details[0].message);
+      setAlertType("error");
       setOpen(true);
     }
   };
@@ -104,12 +108,15 @@ export default function Login() {
           </Card>
         </Grid>
       </Grid>
-      <Snackbar
-        open={open}
-        autoHideDuration={3000}
-        onClose={handleClose}
-        message={alertMsg}
-      />
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity={alertType}
+          sx={{ width: "100%" }}
+        >
+          {alertMsg}
+        </Alert>
+      </Snackbar>
     </>
   ) : null;
 }
