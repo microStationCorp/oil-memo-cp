@@ -6,9 +6,38 @@ import {
   Typography,
   TextField,
   Button,
+  Snackbar,
 } from "@mui/material";
+import { useState } from "react";
+import { LoginSchemaValidation } from "utils/validation";
 
 export default function Home() {
+  const [empId, setEmpId] = useState("");
+
+  const [alertMsg, setMsg] = useState("");
+  const [alertType, setAlertType] = useState("success");
+  const [open, setOpen] = useState(false);
+
+  const onSubmit = () => {
+    const { error, value } = LoginSchemaValidation({
+      empId,
+    });
+    if (!error) {
+      console.log(value);
+    } else {
+      setMsg(error.details[0].message);
+      setOpen(true);
+    }
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   return (
     <>
       <Head>
@@ -20,7 +49,12 @@ export default function Home() {
         <Grid item>
           <Card variant="outlined" sx={{ minWidth: "300px" }}>
             <CardContent>
-              <Grid container direction={"column"} alignItems={"center"} spacing={2}>
+              <Grid
+                container
+                direction={"column"}
+                alignItems={"center"}
+                spacing={2}
+              >
                 <Grid item>
                   <Typography variant="h5" align="center">
                     Login
@@ -31,16 +65,26 @@ export default function Home() {
                     label="Employee Id"
                     variant="outlined"
                     size="small"
+                    value={empId}
+                    onChange={(e) => setEmpId(e.target.value)}
                   />
                 </Grid>
                 <Grid item>
-                  <Button variant="contained" size="small">LogIn</Button>
+                  <Button variant="contained" size="small" onClick={onSubmit}>
+                    LogIn
+                  </Button>
                 </Grid>
               </Grid>
             </CardContent>
           </Card>
         </Grid>
       </Grid>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message={alertMsg}
+      />
     </>
   );
 }
