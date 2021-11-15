@@ -102,6 +102,13 @@ export default function Login() {
                   <Button variant="contained" size="small" onClick={onSubmit}>
                     LogIn
                   </Button>
+                  <Button
+                    variant="text"
+                    size="small"
+                    onClick={() => router.push("/register")}
+                  >
+                    Register
+                  </Button>
                 </Grid>
               </Grid>
             </CardContent>
