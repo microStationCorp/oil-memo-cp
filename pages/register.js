@@ -11,7 +11,10 @@ import {
   Select,
   TextField,
   Typography,
+  Snackbar,
+  Alert,
 } from "@mui/material";
+import { RegisterSchemaValidation } from "utils/validation";
 
 export default function Register() {
   const router = useRouter();
@@ -21,6 +24,10 @@ export default function Register() {
   const [name, setName] = useState("");
   const [des, setDes] = useState("");
 
+  const [alertMsg, setMsg] = useState("");
+  const [alertType, setAlertType] = useState("success");
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
     setLoading(true);
     if (AuthCheck()) {
@@ -28,6 +35,50 @@ export default function Register() {
     }
     setLoading(false);
   }, []);
+
+  const onSubmit = () => {
+    const { error, value } = RegisterSchemaValidation({
+      name: name.toUpperCase().trim().split(" "),
+      empId,
+      des,
+    });
+
+    if (!error) {
+      fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(value),
+      }).then((res) => {
+        res.json().then((data) => {
+          console.log(data);
+          if (data.success) {
+            setMsg("submitted");
+            setAlertType("success");
+          } else {
+            setMsg(data.msg);
+            setAlertType("error");
+          }
+          setOpen(true);
+        });
+      });
+    } else {
+      console.log(error);
+      setMsg(error.details[0].message);
+      setAlertType("error");
+      setOpen(true);
+    }
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   return !loading ? (
     <>
       <Head>
@@ -81,7 +132,7 @@ export default function Register() {
                   </Select>
                 </Grid>
                 <Grid item>
-                  <Button variant="contained" size="small">
+                  <Button variant="contained" size="small" onClick={onSubmit}>
                     Register
                   </Button>
                   <Button
@@ -97,6 +148,15 @@ export default function Register() {
           </Card>
         </Grid>
       </Grid>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity={alertType}
+          sx={{ width: "100%" }}
+        >
+          {alertMsg}
+        </Alert>
+      </Snackbar>
     </>
   ) : null;
 }

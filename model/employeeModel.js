@@ -1,0 +1,18 @@
+import mongoose from "mongoose";
+
+const EmployeeSchema = mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  empId: {
+    type: String,
+    required: true,
+  },
+  des: {
+    type: String,
+    required: true,
+  },
+});
+
+export default mongoose.models.Employee || mongoose.model("Employee", EmployeeSchema);
