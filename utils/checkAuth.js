@@ -1,7 +1,20 @@
 export default function AuthCheck() {
-  if (localStorage.getItem("emp_id")) {
-    return true;
-  } else {
-    return false;
-  }
+  fetch("/api/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ empId: localStorage.getItem("emp_id") }),
+  }).then((res) => {
+    res.json().then((data) => {
+      console.log("authCheck", data);
+      if (data.success) {
+        console.log("in true", data.success);
+        return true;
+      } else {
+        console.log("in false", data.success);
+        return false;
+      }
+    });
+  });
 }

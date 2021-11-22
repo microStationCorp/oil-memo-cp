@@ -25,11 +25,6 @@ export default async function handler(req, res) {
           const doc = await newEmployee.save();
           res.status(201).json({
             success: true,
-            data: {
-              id: doc._id,
-              name: doc.name,
-              empId: doc.empId,
-            },
           });
         } else {
           res

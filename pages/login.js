@@ -16,7 +16,7 @@ import AuthCheck from "utils/checkAuth";
 
 export default function Login() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [empId, setEmpId] = useState("");
 
@@ -25,11 +25,15 @@ export default function Login() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    if (AuthCheck()) {
-      router.push("/");
-    }
-    setLoading(false);
+    (async function fetchData() {
+      if (AuthCheck()) {
+        console.log("in login page go to home");
+        router.push("/");
+      } else {
+        console.log("in login page loading off");
+        setLoading(false);
+      }
+    })();
   }, []);
 
   const onSubmit = () => {
@@ -45,13 +49,16 @@ export default function Login() {
         body: JSON.stringify({ empId }),
       }).then((res) => {
         res.json().then((data) => {
-          console.log(data);
-          localStorage.setItem("emp_id", data.empId);
+          if (data.success) {
+            localStorage.setItem("emp_id", data.data.empId);
+            router.push("/");
+          } else {
+            setMsg(data.msg);
+            setAlertType("error");
+            setOpen(true);
+          }
         });
       });
-      setMsg("submitted");
-      setAlertType("success");
-      setOpen(true);
     } else {
       setMsg(error.details[0].message);
       setAlertType("error");

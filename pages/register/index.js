@@ -18,7 +18,7 @@ import { RegisterSchemaValidation } from "utils/validation";
 
 export default function Register() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [empId, setEmpId] = useState("");
   const [name, setName] = useState("");
@@ -29,11 +29,11 @@ export default function Register() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
     if (AuthCheck()) {
       router.push("/");
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
   const onSubmit = () => {
@@ -54,13 +54,14 @@ export default function Register() {
         res.json().then((data) => {
           console.log(data);
           if (data.success) {
-            setMsg("submitted");
-            setAlertType("success");
+            // setMsg("submitted");
+            // setAlertType("success");
+            router.push("/register/confirmregister");
           } else {
             setMsg(data.msg);
             setAlertType("error");
+            setOpen(true);
           }
-          setOpen(true);
         });
       });
     } else {

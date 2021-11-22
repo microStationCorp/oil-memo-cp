@@ -5,14 +5,14 @@ import AuthCheck from "utils/checkAuth";
 
 export default function Home() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
     if (!AuthCheck()) {
       router.push("/login");
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
   return !loading ? (
