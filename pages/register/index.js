@@ -1,6 +1,5 @@
 import Head from "next/dist/shared/lib/head";
-import { useEffect, useState } from "react";
-import AuthCheck from "utils/checkAuth";
+import { useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import {
   Button,
@@ -18,30 +17,24 @@ import { RegisterSchemaValidation } from "utils/validation";
 
 export default function Register() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
 
   const [empId, setEmpId] = useState("");
   const [name, setName] = useState("");
   const [des, setDes] = useState("");
+  const [password, setPass] = useState("");
 
   const [alertMsg, setMsg] = useState("");
   const [alertType, setAlertType] = useState("success");
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (AuthCheck()) {
-      router.push("/");
-    } else {
-      setLoading(false);
-    }
-  }, []);
 
   const onSubmit = () => {
     const { error, value } = RegisterSchemaValidation({
       name: name.toUpperCase().trim().split(" "),
       empId,
       des,
+      password,
     });
+
 
     if (!error) {
       fetch("/api/register", {
@@ -52,7 +45,6 @@ export default function Register() {
         body: JSON.stringify(value),
       }).then((res) => {
         res.json().then((data) => {
-          console.log(data);
           if (data.success) {
             // setMsg("submitted");
             // setAlertType("success");
@@ -80,7 +72,7 @@ export default function Register() {
     setOpen(false);
   };
 
-  return !loading ? (
+  return (
     <>
       <Head>
         <title>Register Page</title>
@@ -133,6 +125,16 @@ export default function Register() {
                   </Select>
                 </Grid>
                 <Grid item>
+                  <TextField
+                    type="password"
+                    label="Password"
+                    variant="outlined"
+                    size="small"
+                    value={password}
+                    onChange={(e) => setPass(e.target.value)}
+                  />
+                </Grid>
+                <Grid item>
                   <Button variant="contained" size="small" onClick={onSubmit}>
                     Register
                   </Button>
@@ -159,5 +161,5 @@ export default function Register() {
         </Alert>
       </Snackbar>
     </>
-  ) : null;
+  );
 }

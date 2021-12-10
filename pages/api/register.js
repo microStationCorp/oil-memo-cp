@@ -6,11 +6,12 @@ export default async function handler(req, res) {
 
   const { method } = req;
 
-  const { name, des, empId } = req.body;
+  const { name, des, empId, password } = req.body;
   const parsing_data = {
     name: name.join(" "),
     des,
     empId,
+    password,
   };
 
   switch (method) {

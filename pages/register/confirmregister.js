@@ -1,9 +1,8 @@
 import { Button, Card, CardContent, Grid, Typography } from "@mui/material";
 import Head from "next/dist/shared/lib/head";
-import { useRouter } from "next/dist/client/router";
+import { signIn } from "next-auth/react";
 
 export default function ConfirmRegister() {
-  const router = useRouter();
   return (
     <>
       <Head>
@@ -33,7 +32,7 @@ export default function ConfirmRegister() {
                   <Button
                     variant="contained"
                     size="small"
-                    onClick={() => router.push("/login")}
+                    onClick={() => signIn()}
                   >
                     LogIn
                   </Button>
