@@ -6,11 +6,12 @@ export default async function handler(req, res) {
 
   const { method } = req;
 
-  const { name, des, empId } = req.body;
+  const { name, des, empId, password } = req.body;
   const parsing_data = {
     name: name.join(" "),
     des,
     empId,
+    password,
   };
 
   switch (method) {
@@ -25,11 +26,6 @@ export default async function handler(req, res) {
           const doc = await newEmployee.save();
           res.status(201).json({
             success: true,
-            data: {
-              id: doc._id,
-              name: doc.name,
-              empId: doc.empId,
-            },
           });
         } else {
           res

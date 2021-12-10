@@ -1,18 +1,5 @@
 import Joi from "joi";
 
-const LoginSchema = Joi.object({
-  empId: Joi.string()
-    .length(11)
-    .required()
-    .label("Employee Id")
-    .pattern(new RegExp("^[0-9]{11}"))
-    .messages({
-      "string.pattern.base": "Invalid {{#label}}",
-      "string.empty": "{{#label}} Cannot be empty",
-      "string.length": "{{#label}} must contain 11 digits",
-    }),
-});
-
 const RegisterSchema = Joi.object({
   name: Joi.array().items(
     Joi.string()
@@ -43,7 +30,19 @@ const RegisterSchema = Joi.object({
     .required()
     .label("Designation")
     .messages({ "string.empty": "Please select a {{#label}}" }),
+  password: Joi.string()
+    .required()
+    .min(8)
+    .max(20)
+    // .pattern(new RegExp("^[a-zA-z]{8,20}$"))
+    .label("Password")
+    .messages({
+      "string.empty": "{{#label}} Cannot be empty",
+      "string.pattern.base": "Invalid {{#label}}",
+      "string.min": "{{#label}} must contain minimum 8 characters",
+      "string.max": "{{#label}} must contain maximum 20 characters",
+    }),
 });
 
-export const LoginSchemaValidation = (data) => LoginSchema.validate(data);
+// export const LoginSchemaValidation = (data) => LoginSchema.validate(data);
 export const RegisterSchemaValidation = (data) => RegisterSchema.validate(data);

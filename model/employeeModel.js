@@ -9,10 +9,25 @@ const EmployeeSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  password: {
+    type: String,
+    required: true,
+  },
   des: {
     type: String,
     required: true,
   },
+  isEmployee: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  isAdmin: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 
-export default mongoose.models.Employee || mongoose.model("Employee", EmployeeSchema);
+export default mongoose.models.Employee ||
+  mongoose.model("Employee", EmployeeSchema);
