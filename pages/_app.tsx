@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import CssBaseline from "@mui/material/CssBaseline";
 import { CacheProvider } from "@emotion/react";
 import { ThemeProvider } from "@mui/material/styles";
-import theme from "utils/theme";
-import createEmotionCache from "utils/createEmotionCache";
+import theme from "@/utils/theme";
+import createEmotionCache from "@/utils/createEmotionCache";
 import { SessionProvider } from "next-auth/react";
 
 const clientSideEmotionCache = createEmotionCache();
