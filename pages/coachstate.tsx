@@ -2,6 +2,8 @@ import {
   Alert,
   AlertColor,
   Button,
+  Card,
+  CardContent,
   Grid,
   MenuItem,
   Select,
@@ -94,12 +96,19 @@ export default function CoachState({ coaches }) {
         <title>Coach State</title>
       </Head>
 
-      <Grid container spacing={1} direction={"column"} alignItems={"center"}>
+      <Grid container spacing={1} direction={"column"}>
         <Grid item>
-          <Typography variant="h4">Coach State</Typography>
+          <Typography variant="h4" textAlign={"center"}>
+            Coach State
+          </Typography>
         </Grid>
         <Grid item>
-          <Grid container spacing={1} alignItems={"Center"}>
+          <Grid
+            container
+            spacing={1}
+            alignItems={"Center"}
+            justifyContent={"center"}
+          >
             <Grid item>
               <TextField
                 required
@@ -146,7 +155,47 @@ export default function CoachState({ coaches }) {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item>list</Grid>
+        {/* list */}
+        <Grid item>
+          <Grid container justifyContent={"space-evenly"}>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card variant="outlined">
+                <CardContent>
+                  <ListComp
+                    title="Running"
+                    coaches={coaches.filter(
+                      (coach) => coach.cState == "RUNNING"
+                    )}
+                  />
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card variant="outlined">
+                <CardContent>
+                  <ListComp
+                    title="Damaged"
+                    coaches={coaches.filter(
+                      (coach) => coach.cState == "DAMAGED"
+                    )}
+                  />
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <Card variant="outlined">
+                <CardContent>
+                  <ListComp
+                    title="Reserved"
+                    coaches={coaches.filter(
+                      (coach) => coach.cState == "RESERVED"
+                    )}
+                  />
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert
@@ -158,5 +207,22 @@ export default function CoachState({ coaches }) {
         </Alert>
       </Snackbar>
     </>
+  );
+}
+
+function ListComp({ title, coaches }) {
+  return (
+    <Grid container direction={"column"}>
+      <Grid item>
+        <Typography variant="h6" textAlign={"center"}>
+          {title}
+        </Typography>
+        {coaches.map((coach) => (
+          <Typography textAlign={"center"} variant="body1" key={coach.cNum}>
+            {coach.cNum}
+          </Typography>
+        ))}
+      </Grid>
+    </Grid>
   );
 }
