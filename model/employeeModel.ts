@@ -1,32 +1,32 @@
 import mongoose from "mongoose";
 
-const EmployeeSchema = mongoose.Schema({
+const EmployeeSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: true
   },
   empId: {
     type: String,
-    required: true,
+    required: true
   },
   password: {
     type: String,
-    required: true,
+    required: true
   },
   des: {
     type: String,
-    required: true,
+    required: true
   },
   isEmployee: {
     type: Boolean,
     required: true,
-    default: false,
+    default: false
   },
   isAdmin: {
     type: Boolean,
     required: true,
-    default: false,
-  },
+    default: false
+  }
 });
 
 export default mongoose.models.Employee ||

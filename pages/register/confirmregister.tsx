@@ -24,7 +24,7 @@ export default function ConfirmRegister() {
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Typography variant="body" align="center" color="#00c853">
+                  <Typography variant="body1" align="center" color="#00c853">
                     Go to Login Page
                   </Typography>
                 </Grid>

@@ -1,5 +1,5 @@
-import dbConnect from "utils/dbConnect";
-import Employee from "model/employeeModel";
+import dbConnect from "@/utils/dbConnect";
+import Employee from "@/model/employeeModel";
 
 export default async function handler(req, res) {
   await dbConnect();

@@ -1,5 +1,27 @@
 import Joi from "joi";
 
+const CoachStateSchema = Joi.object({
+  cNum: Joi.string()
+    .label("coach number")
+    .min(5)
+    .max(6)
+    .required()
+    .pattern(new RegExp(`^[0-9]{5,6}$`))
+    .messages({
+      "string.min": "{{#label}} must contain minimum 5 characters",
+      "string.max": "{{#label}} must contain maximum 6 characters",
+      "string.empty": "{{#label}} Cannot be empty",
+    }),
+  cType: Joi.string()
+    .label("coach type")
+    .required()
+    .messages({ "string.empty": "{{#label}} Cannot be empty" }),
+  cState: Joi.string()
+    .required()
+    .label("State")
+    .messages({ "string.empty": "Please select a {{#label}}" }),
+});
+
 const RegisterSchema = Joi.object({
   name: Joi.array().items(
     Joi.string()
@@ -46,3 +68,5 @@ const RegisterSchema = Joi.object({
 
 // export const LoginSchemaValidation = (data) => LoginSchema.validate(data);
 export const RegisterSchemaValidation = (data) => RegisterSchema.validate(data);
+export const CoachStateSchemaValidation = (data) =>
+  CoachStateSchema.validate(data);

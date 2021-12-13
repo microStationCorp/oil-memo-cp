@@ -1,5 +1,5 @@
 import Head from "next/dist/shared/lib/head";
-import { useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import {
   Button,
@@ -12,8 +12,9 @@ import {
   Typography,
   Snackbar,
   Alert,
+  AlertColor,
 } from "@mui/material";
-import { RegisterSchemaValidation } from "utils/validation";
+import { RegisterSchemaValidation } from "@/utils/validation";
 
 export default function Register() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function Register() {
   const [password, setPass] = useState("");
 
   const [alertMsg, setMsg] = useState("");
-  const [alertType, setAlertType] = useState("success");
+  const [alertType, setAlertType] = useState<AlertColor>("success");
   const [open, setOpen] = useState(false);
 
   const onSubmit = () => {
@@ -34,7 +35,6 @@ export default function Register() {
       des,
       password,
     });
-
 
     if (!error) {
       fetch("/api/register", {
@@ -64,7 +64,7 @@ export default function Register() {
     }
   };
 
-  const handleClose = (event, reason) => {
+  const handleClose = (event: SyntheticEvent<Element, Event>, reason?: any) => {
     if (reason === "clickaway") {
       return;
     }
