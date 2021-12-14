@@ -17,6 +17,8 @@ import { CoachStateSchemaValidation } from "@/utils/validation";
 import { NextPageContext } from "next";
 import dbConnect from "@/utils/dbConnect";
 import coachModel from "@/model/coachModel";
+import Link from "next/link";
+import { DAMAGED, RUNNING, SPARE } from "@/utils/constatnt";
 
 export async function getServerSideProps(context: NextPageContext) {
   await dbConnect();
@@ -139,9 +141,9 @@ export default function CoachState({ coaches }) {
                 <MenuItem value="">
                   <em>Select State</em>
                 </MenuItem>
-                <MenuItem value={"RUNNING"}>RUNNING</MenuItem>
-                <MenuItem value={"DAMAGED"}>DAMAGED</MenuItem>
-                <MenuItem value={"RESERVED"}>RESERVED</MenuItem>
+                <MenuItem value={RUNNING}>{RUNNING}</MenuItem>
+                <MenuItem value={DAMAGED}>{DAMAGED}</MenuItem>
+                <MenuItem value={SPARE}>{SPARE}</MenuItem>
               </Select>
             </Grid>
             <Grid item>
@@ -155,44 +157,16 @@ export default function CoachState({ coaches }) {
             </Grid>
           </Grid>
         </Grid>
-        {/* list */}
         <Grid item>
           <Grid container justifyContent={"space-evenly"}>
-            <Grid item xs={12} sm={6} md={4}>
-              <Card variant="outlined">
-                <CardContent>
-                  <ListComp
-                    title="Running"
-                    coaches={coaches.filter(
-                      (coach) => coach.cState == "RUNNING"
-                    )}
-                  />
-                </CardContent>
-              </Card>
+            <Grid item>
+              <Link href={`/coachstate/${DAMAGED}`}>Damaged Coach</Link>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Card variant="outlined">
-                <CardContent>
-                  <ListComp
-                    title="Damaged"
-                    coaches={coaches.filter(
-                      (coach) => coach.cState == "DAMAGED"
-                    )}
-                  />
-                </CardContent>
-              </Card>
+            <Grid item>
+              <Link href={`/coachstate/${RUNNING}`}>Running Coach</Link>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Card variant="outlined">
-                <CardContent>
-                  <ListComp
-                    title="Reserved"
-                    coaches={coaches.filter(
-                      (coach) => coach.cState == "RESERVED"
-                    )}
-                  />
-                </CardContent>
-              </Card>
+            <Grid item>
+              <Link href={`/coachstate/${SPARE}`}>Spare Coach</Link>
             </Grid>
           </Grid>
         </Grid>
